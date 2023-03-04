@@ -1,38 +1,30 @@
-# Values for my Python app
-image:
-  repository: my-docker-repo/my-python-app
-  tag: latest
-
-# Redis configuration
-redis:
-  enabled: true
-  image:
-    repository: bitnami/redis
-    tag: latest
-  password: my-redis-password
-  persistence:
-    enabled: true
-    accessMode: ReadWriteOnce
-    size: 1Gi
-
-# Postgres configuration
-postgresql:
-  enabled: true
-  postgresqlUsername: my-postgres-user
-  postgresqlPassword: my-postgres-password
-  postgresqlDatabase: my-postgres-database
-  persistence:
-    enabled: true
-    accessMode: ReadWriteOnce
-    size: 1Gi
-
-# Ingress configuration
 ingress:
   enabled: true
   annotations:
-    kubernetes.io/ingress.class: nginx
-  path: /my-python-app
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
   hosts:
-    - host: my-python-app.example.com
+    - host: my-domain.com
       paths:
-        - /my-python-app
+        - path: /
+          backend:
+            serviceName: my-service
+            servicePort: 80
+
+service:
+  name: my-service
+  port: 8000
+  targetPort: 8000
+
+image:
+  repository: my-repo/my-app
+  tag: 1.0
+
+replicaCount: 3
+
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  create: true
+  name: my-serviceaccount
