@@ -1,3 +1,17 @@
+image:
+  repository: my-repo/my-python-app
+  tag: 1.0
+
+replicaCount: 3
+
+nameOverride: ""
+fullnameOverride: ""
+
+service:
+  name: my-python-app
+  port: 8000
+  targetPort: 8000
+
 ingress:
   enabled: true
   annotations:
@@ -8,23 +22,50 @@ ingress:
       paths:
         - path: /
           backend:
-            serviceName: my-service
+            serviceName: my-python-app
             servicePort: 80
 
-service:
-  name: my-service
-  port: 8000
-  targetPort: 8000
+postgresql:
+  enabled: true
+  postgresqlUsername: myuser
+  postgresqlPassword: mypassword
+  postgresqlDatabase: mydb
+  service:
+    port: 5432
+  persistence:
+    enabled: true
+    size: 10Gi
 
-image:
-  repository: my-repo/my-app
-  tag: 1.0
+redis:
+  enabled: true
+  usePassword: true
+  architecture: standalone
+  password: myredispassword
+  persistence:
+    enabled: true
+    size: 5Gi
 
-replicaCount: 3
+podAnnotations:
+  my-pod-annotation: example-value
 
-nameOverride: ""
-fullnameOverride: ""
+livenessProbe:
+  httpGet:
+    path: /healthz
+    port: http
+  initialDelaySeconds: 30
+  periodSeconds: 10
 
-serviceAccount:
-  create: true
-  name: my-serviceaccount
+readinessProbe:
+  httpGet:
+    path: /healthz
+    port: http
+  initialDelaySeconds: 10
+  periodSeconds: 5
+
+resources:
+  limits:
+    cpu: 1
+    memory: 512Mi
+  requests:
+    cpu: 0.5
+    memory: 256Mi

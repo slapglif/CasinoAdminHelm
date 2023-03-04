@@ -1,53 +1,48 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Release.Name }}-web
-  labels:
-    app: {{ .Values.appName }}
+  name: my-python-app
 spec:
-  replicas: {{ .Values.replicaCount }}
+  replicas: 3
   selector:
     matchLabels:
-      app: {{ .Values.appName }}
-      tier: web
+      app: my-python-app
   template:
     metadata:
       labels:
-        app: {{ .Values.appName }}
-        tier: web
+        app: my-python-app
     spec:
-      serviceAccountName: {{ .Values.serviceAccount.name }}
       containers:
-        - name: {{ .Values.appName }}
-          image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
+        - name: my-python-app
+          image: my-repo/my-python-app:1.0
+          ports:
+            - containerPort: 8000
+          envFrom:
+            - configMapRef:
+                name: my-python-app-config
+            - secretRef:
+                name: my-python-app-secret
           env:
             - name: POSTGRES_USER
-              value: {{ .Values.postgres.username }}
+              value: myuser
             - name: POSTGRES_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: {{ .Values.postgres.secretName }}
-                  key: postgres-password
+              value: mypassword
             - name: POSTGRES_HOST
-              value: {{ .Values.postgres.host }}
+              value: postgres
+            - name: POSTGRES_PORT
+              value: "5432"
             - name: POSTGRES_DB
-              value: {{ .Values.postgres.dbname }}
+              value: mydb
             - name: REDIS_HOST
-              value: {{ .Values.redis.host }}
+              value: redis
             - name: REDIS_PORT
-              value: {{ .Values.redis.port }}
+              value: "6379"
             - name: REDIS_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: {{ .Values.redis.secretName }}
-                  key: redis-password
-          ports:
-            - name: http
-              containerPort: 8080
-          volumeMounts:
-            - name: log
-              mountPath: /app/logs
-      volumes:
-        - name: log
-          emptyDir: {}
+              value: myredispassword
+          resources:
+            limits:
+              cpu: "1"
+              memory: "512Mi"
+            requests:
+              cpu: "0.5"
+              memory: "256Mi"
