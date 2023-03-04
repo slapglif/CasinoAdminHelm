@@ -1,42 +1,38 @@
+# Values for my Python app
 image:
-  repository: my-python-app
+  repository: my-docker-repo/my-python-app
   tag: latest
-  pullPolicy: IfNotPresent
 
-service:
-  name: my-python-app
-  type: ClusterIP
-  port: 8000
-
-ingress:
-  enabled: true
-  annotations:
-    nginx.ingress.kubernetes.io/ssl-redirect: "false"
-    nginx.ingress.kubernetes.io/rewrite-target: /$2
-  path: /
-  hosts:
-    - my-python-app.local
-  tls:
-    - secretName: my-python-app-tls
-      hosts:
-        - my-python-app.local
-
+# Redis configuration
 redis:
   enabled: true
+  image:
+    repository: bitnami/redis
+    tag: latest
   password: my-redis-password
+  persistence:
+    enabled: true
+    accessMode: ReadWriteOnce
+    size: 1Gi
 
+# Postgres configuration
 postgresql:
   enabled: true
   postgresqlUsername: my-postgres-user
   postgresqlPassword: my-postgres-password
-  postgresqlDatabase: my-postgres-db
+  postgresqlDatabase: my-postgres-database
+  persistence:
+    enabled: true
+    accessMode: ReadWriteOnce
+    size: 1Gi
 
-rancher:
-  ingress:
-    tls:
-      source: rancher
-      email: your-email@example.com
-    extraAnnotations:
-      kubernetes.io/ingress.class: rancher
-    extraLabels:
-      app: my-python-app
+# Ingress configuration
+ingress:
+  enabled: true
+  annotations:
+    kubernetes.io/ingress.class: nginx
+  path: /my-python-app
+  hosts:
+    - host: my-python-app.example.com
+      paths:
+        - /my-python-app
