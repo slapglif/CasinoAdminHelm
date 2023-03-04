@@ -1,10 +1,10 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "mychart.fullname" . }}-web
+  name: {{ include "AdminHelm.fullname" . }}-web
   labels:
-    app: {{ include "mychart.name" . }}
-    chart: {{ include "mychart.chart" . }}
+    app: {{ include "AdminHelm.name" . }}
+    chart: {{ include "AdminHelm.chart" . }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
   annotations:
@@ -13,12 +13,12 @@ spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: {{ include "mychart.name" . }}
+      app: {{ include "AdminHelm.name" . }}
       release: {{ .Release.Name }}
   template:
     metadata:
       labels:
-        app: {{ include "mychart.name" . }}
+        app: {{ include "AdminHelm.name" . }}
         release: {{ .Release.Name }}
     spec:
       containers:
