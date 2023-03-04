@@ -1,0 +1,67 @@
+# Deployment Configuration
+deployment:
+  replicas: 3
+  image:
+    repository: my-registry/my-python-app
+    tag: latest
+    pullPolicy: IfNotPresent
+  env:
+    - name: DATABASE_URL
+      valueFrom:
+        secretKeyRef:
+          name: postgres-secret
+          key: database-url
+    - name: REDIS_URL
+      valueFrom:
+        secretKeyRef:
+          name: redis-secret
+          key: redis-url
+  resources:
+    limits:
+      cpu: 100m
+      memory: 128Mi
+    requests:
+      cpu: 50m
+      memory: 64Mi
+  livenessProbe:
+    httpGet:
+      path: /healthz
+      port: http
+    initialDelaySeconds: 30
+    periodSeconds: 10
+    timeoutSeconds: 5
+    successThreshold: 1
+    failureThreshold: 3
+  readinessProbe:
+    httpGet:
+      path: /readiness
+      port: http
+    initialDelaySeconds: 5
+    periodSeconds: 10
+    timeoutSeconds: 5
+    successThreshold: 1
+    failureThreshold: 3
+
+# Service Configuration
+service:
+  name: my-python-app
+  type: ClusterIP
+  port: 80
+
+# Ingress Configuration
+ingress:
+  enabled: true
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+  hosts:
+    - host: example.com
+      paths:
+        - path: /app(/|$)(.*)
+          pathType: Prefix
+          backend:
+            service:
+              name: {{ include "myapp.fullname" . }}-service
+              port:
+                name: http
