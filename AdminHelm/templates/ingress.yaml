@@ -17,6 +17,6 @@ spec:
           service:
             name: app-service
             port:
-              name: https
+              name: http
 
 
