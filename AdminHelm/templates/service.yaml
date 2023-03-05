@@ -1,16 +1,14 @@
+# templates/service.yaml
 apiVersion: v1
 kind: Service
 metadata:
-  name: app-service
-  labels:
-    app.kubernetes.io/name: app
-    app.kubernetes.io/instance: my-release
+  name: app
 spec:
-  type: ClusterIP
-  ports:
-    - name: http
-      port: 80
-      targetPort: 8000
-      protocol: TCP
   selector:
     app: app
+  ports:
+  - name: http
+    port: 80
+    targetPort: 8000
+  type: LoadBalancer
+
