@@ -14,3 +14,4 @@ spec:
       protocol: TCP
   selector:
     app: app
+    app.kubernetes.io/instance: my-release
