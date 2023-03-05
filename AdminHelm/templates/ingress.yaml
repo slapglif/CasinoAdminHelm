@@ -1,15 +1,11 @@
+# templates/ingress.yaml
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
+  name: app
   annotations:
-#     kubernetes.io/ingress.class: nginx
-#     nginx.ingress.kubernetes.io/ssl-redirect: "false"
-#     nginx.ingress.kubernetes.io/rewrite-target: /
-      nginx.ingress.kubernetes.io/app-root: /
-  namespace: default
-  name: app-ingress
+    kubernetes.io/ingress.class: nginx
 spec:
-  ingressClassName: nginx
   rules:
   - host: baohule.com
     http:
@@ -18,6 +14,6 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: app-service
-            port: 
-              number: 80
+            name: app
+            port:
+              name: http
