@@ -9,21 +9,8 @@ fullnameOverride: ""
 
 service:
   name: app
-  port: 443
-  targetPort: 443
-
-ingress:
-  enabled: true
-  annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /
-    nginx.ingress.kubernetes.io/ssl-redirect: "true"
-  hosts:
-    - host: baohule.com
-      paths:
-        - path: /
-          backend:
-            serviceName: app
-            servicePort: 443
+  port: 8000
+  targetPort: 8000
 
 podAnnotations:
   my-pod-annotation: example-value
