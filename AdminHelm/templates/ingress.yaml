@@ -8,11 +8,6 @@ metadata:
 spec:
 
 rules:
-  tls:
-    - hosts:
-        - baohule.com
-      secretName: cforigin
-      
   - host: baohule.com
     http:
       paths:
