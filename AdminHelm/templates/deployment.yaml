@@ -1,44 +1,27 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: my-python-app
+  name: app
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: my-python-app
+      app: app
   template:
     metadata:
       labels:
-        app: my-python-app
+        app: app
     spec:
       containers:
-        - name: my-python-app
-          image: my-repo/my-python-app:1.0
+        - name: app
+          image: docker.io/kuro112:backend
           ports:
             - containerPort: 8000
           envFrom:
             - configMapRef:
-                name: my-python-app-config
+                name: app-config
             - secretRef:
-                name: my-python-app-secret
-          env:
-            - name: POSTGRES_USER
-              value: myuser
-            - name: POSTGRES_PASSWORD
-              value: mypassword
-            - name: POSTGRES_HOST
-              value: postgres
-            - name: POSTGRES_PORT
-              value: "5432"
-            - name: POSTGRES_DB
-              value: mydb
-            - name: REDIS_HOST
-              value: redis
-            - name: REDIS_PORT
-              value: "6379"
-            - name: REDIS_PASSWORD
-              value: myredispassword
+                name: pp-secret
           resources:
             limits:
               cpu: "1"
