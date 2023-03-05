@@ -1,8 +1,9 @@
-# templates/service.yaml
 apiVersion: v1
 kind: Service
 metadata:
   name: app
+  annotations:
+    service.beta.kubernetes.io/do-loadbalancer-enable-proxy-protocol: "true"
 spec:
   selector:
     app: app
