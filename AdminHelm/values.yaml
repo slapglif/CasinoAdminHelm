@@ -9,8 +9,8 @@ fullnameOverride: ""
 
 service:
   name: app
-  port: 8000
-  targetPort: 8000
+  port: 443
+  targetPort: 443
 
 ingress:
   enabled: true
@@ -23,7 +23,7 @@ ingress:
         - path: /
           backend:
             serviceName: app
-            servicePort: 80
+            servicePort: 443
 
 podAnnotations:
   my-pod-annotation: example-value
