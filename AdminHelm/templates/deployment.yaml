@@ -17,7 +17,7 @@ spec:
           image: docker.io/kuro112/casinoadmin:backend
           imagePullPolicy: Always # Added line
           ports:
-            - containerPort: 8000
+            - containerPort: 443
           envFrom:
             - secretRef:
                 name: pp-secret
