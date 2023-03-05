@@ -15,6 +15,7 @@ spec:
       containers:
         - name: app
           image: docker.io/kuro112/casinoadmin:backend
+          imagePullPolicy: Always # Added line
           ports:
             - containerPort: 8000
           envFrom:
