@@ -8,7 +8,6 @@ metadata:
   namespace: default
   name: app-ingress
 spec:
-  ingressClassName: nginx
   rules:
   - host: baohule.com
     http:
