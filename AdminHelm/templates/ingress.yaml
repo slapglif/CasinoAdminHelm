@@ -17,6 +17,6 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: http-svc
+            name: app-service
             port: 
               number: 80
