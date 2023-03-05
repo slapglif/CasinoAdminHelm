@@ -1,6 +1,6 @@
 image:
-  repository: my-repo/my-python-app
-  tag: 1.0
+  repository: docker.io/kuro112
+  tag: casinoadmin
 
 replicaCount: 3
 
@@ -8,7 +8,7 @@ nameOverride: ""
 fullnameOverride: ""
 
 service:
-  name: my-python-app
+  name: app
   port: 8000
   targetPort: 8000
 
@@ -18,32 +18,12 @@ ingress:
     nginx.ingress.kubernetes.io/rewrite-target: /
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
   hosts:
-    - host: my-domain.com
+    - host: baohule.com
       paths:
         - path: /
           backend:
-            serviceName: my-python-app
+            serviceName: app
             servicePort: 80
-
-postgresql:
-  enabled: true
-  postgresqlUsername: myuser
-  postgresqlPassword: mypassword
-  postgresqlDatabase: mydb
-  service:
-    port: 5432
-  persistence:
-    enabled: true
-    size: 10Gi
-
-redis:
-  enabled: true
-  usePassword: true
-  architecture: standalone
-  password: myredispassword
-  persistence:
-    enabled: true
-    size: 5Gi
 
 podAnnotations:
   my-pod-annotation: example-value
